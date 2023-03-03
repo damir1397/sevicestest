@@ -1,5 +1,6 @@
 package kg.damir.sevicestest
 
+import android.app.IntentService
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,10 +13,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.*
 
-class MyForegroundService : Service() {
+class MyIntentService : IntentService(NAME) {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
+    @Deprecated("Deprecated in Java")
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
@@ -23,36 +24,25 @@ class MyForegroundService : Service() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        log("onStartCommand")
-
-        coroutineScope.launch {
-            for (i in 0 until 100) {
-                delay(1000)
-                log("Timer $i")
-            }
-            stopSelf()
+    @Deprecated("Deprecated in Java")
+    override fun onHandleIntent(intent: Intent?) {
+        log("onHandleIntent")
+        for (i in 0 until 5) {
+            Thread.sleep(1000)
+            log("Timer $i")
         }
-        return START_STICKY
-
     }
-//    START_STICKY Перезапуск сервиса когда приложение удалена с диспечера но интент придет 0
-//    START_NOT_STICKY Не перезапускает сервис когда приложение удалена с диспечера  но интент придет 0
-//    START_REDELIVER_INTENT перезапускает сервис с тем же интентом котрый пришел
 
 
+    @Deprecated("Deprecated in Java")
     override fun onDestroy() {
         super.onDestroy()
-        coroutineScope.cancel()
         log("onDestroy")
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
-    }
 
     private fun log(message: String) {
-        Log.d("Service_Tag", "MyForegroundService $message")
+        Log.d("Service_Tag", "MyIntentService $message")
     }
 
     private fun createNotificationChannel() {
@@ -80,9 +70,10 @@ class MyForegroundService : Service() {
         private const val CHANNEL_ID = "channel_id"
         private const val CHANNEL_NAME = "channel_name"
         private const val NOTIFICATION_ID = 1
+        private const val NAME = "MyIntentService"
 
         fun newIntent(context: Context): Intent {
-            return Intent(context, MyForegroundService::class.java)
+            return Intent(context, MyIntentService::class.java)
         }
     }
 }
