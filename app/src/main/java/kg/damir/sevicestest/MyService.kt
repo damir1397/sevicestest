@@ -30,6 +30,10 @@ class MyService : Service() {
         return START_REDELIVER_INTENT
 
     }
+//    START_STICKY Перезапуск сервиса когда приложение удалена с диспечера но интент придет 0
+//    START_NOT_STICKY Не перезапускает сервис когда приложение удалена с диспечера  но интент придет 0
+//    START_REDELIVER_INTENT перезапускает сервис с тем же интентом котрый пришел
+
 
     override fun onDestroy() {
         super.onDestroy()
