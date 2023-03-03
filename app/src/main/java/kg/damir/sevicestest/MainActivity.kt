@@ -31,5 +31,8 @@ class MainActivity : AppCompatActivity() {
                 MyIntentService.newIntent(this)
             )
         }
+        binding.jobDispatcher.setOnClickListener {
+
+        }
     }
 }
